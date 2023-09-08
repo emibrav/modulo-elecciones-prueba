@@ -5,7 +5,7 @@ import Image from "next/image"
 import "./globals.css"
 
 const fetchResults = () => {
-  return fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQK1MR-HUUIj8rXpby9uGFU7BgbZo2pHJlpZ6-FgFDpu8_kDJDwBbWNxG-U2Au_ZuMcp9kffuvhwZON/pub?output=csv", { next: { revalidate: 120 } })
+  return fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQK1MR-HUUIj8rXpby9uGFU7BgbZo2pHJlpZ6-FgFDpu8_kDJDwBbWNxG-U2Au_ZuMcp9kffuvhwZON/pub?output=csv", { next: { revalidate: 30 } })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok")
