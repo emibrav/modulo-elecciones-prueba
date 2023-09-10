@@ -1,14 +1,11 @@
-import axios from "axios"
 import Papa from "papaparse"
-import Image from "next/image"
-
-import "./globals.css"
+import Card from "./Card"
 
 const fetchResults = () => {
-  return fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQK1MR-HUUIj8rXpby9uGFU7BgbZo2pHJlpZ6-FgFDpu8_kDJDwBbWNxG-U2Au_ZuMcp9kffuvhwZON/pub?output=csv", { next: { revalidate: 30 } })
+  return fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQK1MR-HUUIj8rXpby9uGFU7BgbZo2pHJlpZ6-FgFDpu8_kDJDwBbWNxG-U2Au_ZuMcp9kffuvhwZON/pub?output=csv", { next: { revalidate: 2 } })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok")
+        throw new Error("Fetching error")
       }
       return response.text() // Cambiamos a response.text() para obtener el texto
     })
@@ -17,7 +14,6 @@ const fetchResults = () => {
         Papa.parse(text, {
           header: true,
           complete: (results) => {
-            console.log(results.data)
             resolve(results.data)
           },
           error: (error) => {
@@ -31,14 +27,12 @@ const fetchResults = () => {
 const GetCandidates = async () => {
   const results = await fetchResults()
   return (
-    <div style={{ display: "flex", padding: "30px", gap: "20px", border: "1px solid red" }}>
-      {results.map((item) => (
-        <div key={item.id} style={{ display: "flex", flexDirection: "column" }}>
-          <Image alt={item.candidato} src={`/img/${item.foto}`} width={120} height={120} />
-          {item.candidato} {item.porcentajePartido}
-        </div>
-      ))}
-    </div>
+    <>
+      <h1>{results["Porcentaje Escrutado"]}</h1>
+      <div className='grid grid-flow-col gap-2 p-3 overflow-x-auto border-2'>
+        <Card results={results} />
+      </div>
+    </>
   )
 }
 export default GetCandidates

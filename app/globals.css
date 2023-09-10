@@ -1,15 +1,3 @@
-* {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  transition: all 0.3s;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* font-family: "heebo"; */
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f7;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
