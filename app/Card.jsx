@@ -30,7 +30,7 @@ const Card = ({ results }) => {
                 <h2 className='text-4xl font-bold text-center text-gray-800 '>{item["Porcentaje Partido"]}</h2>
                 <h3 className='text-lg font-bold text-center text-gray-800 '>{item.candidato}</h3>
                 <p className='mt-1 text-sm text-center text-gray-800'>{item["Nombre Partido"]}</p>
-                <p class='inline-block align-end m-2 text-center text-xs text-gray-500 dark:text-gray-500'>Votos: {item["Votos Totales"]}</p>
+                <p className='inline-block m-2 text-xs text-center text-gray-500 align-end dark:text-gray-500'>Votos: {item["Votos Totales"]}</p>
               </div>
             </div>
           </div>
