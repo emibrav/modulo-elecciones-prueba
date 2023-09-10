@@ -29,9 +29,7 @@ const GetCandidates = async () => {
   return (
     <>
       <h1>{results["Porcentaje Escrutado"]}</h1>
-      <div className='grid grid-flow-col gap-2 p-3 overflow-x-auto border-2'>
-        <Card results={results} />
-      </div>
+      <Card results={results} />
     </>
   )
 }
