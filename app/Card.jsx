@@ -26,7 +26,7 @@ const Card = ({ results }) => {
             </div>
             <div className='flex flex-col rounded-b-lg '>
               <Image className='w-full h-44 md:w-52' alt={item.candidato} src={`/img/${item["Foto Candidato"]}`} width={120} height={160} />
-              <div className='flex flex-col h-full p-2 rounded-b-lg flex-2'>
+              <div className='flex flex-col h-full p-2 rounded-b-lg flex-2 bg-white'>
                 <h2 className='text-4xl font-bold text-center text-gray-800 '>{item["Porcentaje Partido"]}</h2>
                 <h3 className='text-lg font-bold text-center text-gray-800 '>{item.candidato}</h3>
                 <p className='mt-1 text-sm text-center text-gray-800'>{item["Nombre Partido"]}</p>
