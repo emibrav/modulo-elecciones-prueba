@@ -2,7 +2,7 @@ import Papa from "papaparse"
 import Card from "./Card"
 
 const fetchResults = () => {
-  return fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQK1MR-HUUIj8rXpby9uGFU7BgbZo2pHJlpZ6-FgFDpu8_kDJDwBbWNxG-U2Au_ZuMcp9kffuvhwZON/pub?output=csv", { next: { revalidate: 60 } })
+  return fetch("https://docs.google.com/spreadsheets/d/1IXw8QNVwQ540csFzPfcnPe84lKMJNJ5z80mJYdfKQ1M/pub?output=csv", { next: { revalidate: 60 } })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Fetching error")
