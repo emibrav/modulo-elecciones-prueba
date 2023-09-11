@@ -15,7 +15,7 @@ const Card = ({ results }) => {
           <div
             key={item.id}
             style={{
-              border: `1px solid ${item["Color"]}`,
+              border: `2px solid ${item["Color"]}`,
             }}
             className='border-green-800 rounded-b-lg shadow-md w-32 '
           >
