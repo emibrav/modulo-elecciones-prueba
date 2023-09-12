@@ -15,6 +15,7 @@ const fetchResults = () => {
           header: true,
           complete: (results) => {
             resolve(results.data)
+            console.log(results.data[0]["Mesas Escrutadas"])
           },
           error: (error) => {
             reject(error.message)
@@ -23,12 +24,22 @@ const fetchResults = () => {
       })
     })
 }
+// const mesasEscrutadas = results[0]["Mesas Escrutadas"]
+const formatNumber = (numberString) => {
+  const number = parseFloat(numberString.replace(",", ".")) // Reemplaza la coma por el punto y convierte a número
+  return number.toLocaleString("es-ES") // Formatea el número con separadores de miles y decimales
+}
 
 const GetCandidates = async () => {
   const results = await fetchResults()
   return (
     <>
-      {results.data}
+      <div className='px-3'>
+        <p className='text-xs'>
+          Escrutado: {formatNumber(results[0]["Mesas Escrutadas"])}% <br></br>
+          En blanco: {formatNumber(results[0]["Votos en Blanco"])} | Votos totales: {formatNumber(results[0]["Total de Votos"])}
+        </p>
+      </div>
       <Card results={results} />
     </>
   )
