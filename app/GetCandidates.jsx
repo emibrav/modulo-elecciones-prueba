@@ -15,7 +15,7 @@ const fetchResults = () => {
           header: true,
           complete: (results) => {
             resolve(results.data)
-            console.log(results.data[0]["Mesas Escrutadas"])
+            // console.log(results.data[0]["Mesas Escrutadas"])
           },
           error: (error) => {
             reject(error.message)
@@ -34,12 +34,12 @@ const GetCandidates = async () => {
   const results = await fetchResults()
   return (
     <>
-      <div className='px-3'>
+      {/* <div className='px-3'>
         <p className='text-xs'>
           Escrutado: {formatNumber(results[0]["Mesas Escrutadas"])}% <br></br>
           En blanco: {formatNumber(results[0]["Votos en Blanco"])} | Votos totales: {formatNumber(results[0]["Total de Votos"])}
         </p>
-      </div>
+      </div> */}
       <Card results={results} />
     </>
   )
