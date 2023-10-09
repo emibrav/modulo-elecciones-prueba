@@ -29,29 +29,19 @@ function dividirPorcentajeConComa(cadena) {
   return resultado
 }
 const Card = ({ results }) => {
+  // Eliminar comas y convertir a números
+  const num1 = parseFloat(results[0]["Votos Candidato"].replace(/,/g, ""))
+  const num2 = parseFloat(results[1]["Votos Candidato"].replace(/,/g, ""))
+
+  // Realizar la resta
+  const resta = num1 - num2
+  // Redondear el resultado a 3 decimales
+  const resultadoRedondeado = resta.toFixed(3)
+
+  // Mostrar el resultado
+  console.log(parseFloat(resultadoRedondeado))
   return (
     <>
-      {/* <div className='w-full grid-flow-col p-3 md:gap-2 lg:grid lg:overflow-x-auto'>
-        {results.sort(sortByPercentage).map((item) => (
-          <div key={item.id} className='block w-full border border-red-500 rounded-b-lg shadow-xl md:w-48 '>
-            <div className='flex w-full h-3 max-w-sm overflow-hidden bg-gray-300 '>
-              <div className='flex flex-col justify-center text-center text-white bg-blue-500 text-xxs ' role='progressbar' style={{ backgroundColor: item["Color"], width: `${parseFloat(item["% Partido"])}%` }} aria-valuemin={0} aria-valuemax={100}>
-              {item["% Partido"]}%
-              </div>
-            </div>
-            <div className='relative flex flex-col p-1 rounded-b-lg'>
-              <Image className='w-24 border border-red-500 md:w-4/5 md:absolute smd:-top-8 rounded-xl' alt={item.candidato} src={`/img/${item["Foto Candidato"]}`} width={120} height={160} />
-              <div className='flex flex-col p-1 bg-white border border-red-500 rounded-b-lg w- md:h-full flex-2'>
-                <h2 className='text-2xl font-bold text-center text-gray-800 '>{item["% Candidato"]}%</h2>
-                <h3 className='text-sm font-bold text-center text-gray-800 '>{item.candidato}</h3>
-                <p className='mt-1 text-xs text-center text-gray-800'>{item["Nombre Partido"]}</p>
-                <p className='inline-block m-2 text-center text-gray-500 text-xxs align-end'>Votos: {formatNumber(item["Votos Candidato"])}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div> */}
-      {/* `${styles[]}` */}
       <div className={styles["elecciones-container"]}>
         <div className={`${styles["loading-circle-container"]} ${styles["center-me-x-y"]}`} style={{ display: "none" }}>
           <div className={styles["loading-circle"]}>
@@ -62,7 +52,7 @@ const Card = ({ results }) => {
         <div className={`${styles.escrutinio} ${styles["flex-container"]}`}>
           <div className={styles["escrutinio-first-data"]}>
             <p className={styles.poppins}>Mesas escrutadas</p>
-            <p className={`${styles["porcentaje-escrutinio"]} ${styles.poppins} ${styles["font-700"]}`}>{results[0]["Mesas Escrutadas"]}</p>
+            <p className={`${styles["porcentaje-escrutinio"]} ${styles.poppins} ${styles["font-700"]}`}>{results[0]["Mesas Escrutadas"]}%</p>
           </div>
           <div className={styles["escrutinio-second-data"]}>
             <div className={`${styles["porcentaje-escrutinio-bar"]} ${styles["hide-desktop"]}`}>
@@ -78,18 +68,21 @@ const Card = ({ results }) => {
           <div className={styles["swiper-wrapper"]}>
             {results.sort(sortByVotes).map((item, index) => (
               <div key={item.id} className={`${styles["swiper-slide"]} ${styles["candidate-card"]} ${styles["show-difference"]}`}>
-                <div className={styles["vote-difference"]}>
-                  <span className={`${styles.block} ${styles["font-700"]}`}>{index["Votos Candidato"] - (index + 1)["Votos Candidato"]}</span>
-                  <span className={styles.block}>Votos de diferencia</span>
-                </div>
+                {index > 0 && index < 3 && Math.abs(parseFloat(item["Votos Candidato"].replace(/\./g, "")) - parseFloat(results[index - 1]["Votos Candidato"].replace(/\./g, ""))).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 3 }) < 249.999 && (
+                  <div style={{ background: `${results[index - 1]["Color"]}` }} className={styles["vote-difference"]}>
+                    {/* Convertir los valores con puntos en números y calcular la diferencia en valor absoluto */}
+                    <span className={`${styles.block} ${styles["font-700"]}`}>{Math.abs(parseFloat(item["Votos Candidato"].replace(/\./g, "")) - parseFloat(results[index - 1]["Votos Candidato"].replace(/\./g, ""))).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 3 })}</span>
+                    <span className={styles.block}>Votos de diferencia</span>
+                  </div>
+                )}
                 <div className={styles["opacity-holder"]}>
                   <div className={styles["main-data-holder"]}>
                     <div className={styles["extra-holder"]}>
                       <figure className={styles.figure}>
-                        <Image src={`/img/${item["Foto Candidato"]}`} width={100} height={420} className={styles.asd} alt={item.candidato} />
+                        <Image src={`/img/${item["Foto Candidato"]}`} width={100} height={420} className={styles.imagen} alt={item.candidato} />
                         <div className={`${styles["position-number"]} ${styles["center-me-y"]} ${styles["font-700"]}`}>{results.indexOf(item) + 1}º</div>
                         <div className={`${styles["porcentaje-bar"]} ${styles["center-me-x"]} ${styles["hide-mobile"]}}`}>
-                          <div className={styles["porcentaje-color-bar"]}></div>
+                          <div style={{ background: `${item["Color"]}`, width: `${parseFloat(item["% Partido"])}%` }} className={styles["porcentaje-color-bar"]}></div>
                         </div>
                       </figure>
                       <div className={styles["nombres-holder"]}>
@@ -102,20 +95,25 @@ const Card = ({ results }) => {
                       </div>
                     </div>
                     <div className={`${styles["justify-center"]} ${styles["porcentaje-votos"]} ${styles["flex-container"]} ${styles["font-700"]} ${styles.poppins}`}>
-                      <div className={`${styles["single-number"]} ${styles[`digit-${dividirPorcentajeConComa(item["% Partido"])[0]}`]} ${styles["font-700"]} ${styles["poppins"]}`}>
-                        <div className={styles["extra-holder"]}>
-                          <span className=''>0</span>
-                          <span className=''>1</span>
-                          <span className=''>2</span>
-                          <span className=''>3</span>
-                          <span className=''>4</span>
-                          <span className=''>5</span>
-                          <span className=''>6</span>
-                          <span className=''>7</span>
-                          <span className=''>8</span>
-                          <span className=''>9</span>
+                      {/* Si la primera cifra es 0, por ejemplo "08,74", que no muestre nada */}
+                      {dividirPorcentajeConComa(item["% Partido"])[0] != 0 ? (
+                        <div className={`${styles["single-number"]} ${styles[`digit-${dividirPorcentajeConComa(item["% Partido"])[0]}`]} ${styles["font-700"]} ${styles["poppins"]}`}>
+                          <div className={styles["extra-holder"]}>
+                            <span className=''>0</span>
+                            <span className=''>1</span>
+                            <span className=''>2</span>
+                            <span className=''>3</span>
+                            <span className=''>4</span>
+                            <span className=''>5</span>
+                            <span className=''>6</span>
+                            <span className=''>7</span>
+                            <span className=''>8</span>
+                            <span className=''>9</span>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        ""
+                      )}
 
                       <div className={`${styles["single-number"]} ${styles[`digit-${dividirPorcentajeConComa(item["% Partido"])[1]}`]} ${styles["font-700"]} ${styles["poppins"]}`}>
                         <div className={styles["extra-holder"]}>
